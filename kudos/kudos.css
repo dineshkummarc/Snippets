@@ -1,0 +1,301 @@
+/* animations */
+
+@-moz-keyframes hoverSelect 
+	{       
+	0% {
+		-moz-transform: scale(0.1); 
+	}
+	100% {
+		-moz-transform: scale(1.1);  
+	}
+}
+
+@-webkit-keyframes hoverSelect
+	{       
+	0% {
+		-webkit-transform: scale(0.1); 
+	}
+	100% {
+		-webkit-transform: scale(1.1);  
+	}
+}
+
+@-webkit-keyframes hoverPulse
+	{       
+	0% {
+		-webkit-transform: scale(0.2); 
+	}
+	50% {
+		-webkit-transform: scale(0.35);
+	}
+	100% {
+		-webkit-transform: scale(0.2);  
+	}
+}
+
+@-moz-keyframes hoverPulse
+	{       
+	0% {
+		-moz-transform: scale(0.2); 
+	}
+	50% {
+		-moz-transform: scale(0.35);
+	}
+	100% {
+		-moz-transform: scale(0.2);  
+	}
+}
+
+/* Generic Styles */
+
+figure.kudos_button {
+	width: 100px;
+	height: 60px;
+	text-align: center;
+}
+
+div.circle {
+	position: relative;
+	display: inline-block;
+	width: 40px;
+	height: 40px;
+	border-radius: 40px;
+	background-color: transparent;
+	border: 4px solid #000;
+	margin: 0 auto;
+}
+
+.heart {
+    position: relative;
+    width: 100px;
+    height: 90px;
+}
+.heart:before,
+.heart:after {
+    position: absolute;
+    content: "";
+    left: 50px;
+    top: 0;
+    width: 50px;
+    height: 80px;
+    background: red;
+    -moz-border-radius: 50px 50px 0 0;
+    border-radius: 50px 50px 0 0;
+    -webkit-transform: rotate(-45deg);
+       -moz-transform: rotate(-45deg);
+        -ms-transform: rotate(-45deg);
+         -o-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+    -webkit-transform-origin: 0 100%;
+       -moz-transform-origin: 0 100%;
+        -ms-transform-origin: 0 100%;
+         -o-transform-origin: 0 100%;
+            transform-origin: 0 100%;
+}
+.heart:after {
+    left: 0;
+    -webkit-transform: rotate(45deg);
+       -moz-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+         -o-transform: rotate(45deg);
+            transform: rotate(45deg);
+    -webkit-transform-origin: 100% 100%;
+       -moz-transform-origin: 100% 100%;
+        -ms-transform-origin: 100% 100%;
+         -o-transform-origin: 100% 100%;
+            transform-origin :100% 100%;
+}				
+
+.star {
+   margin: 50px 0;
+   position: relative;
+   display: block;
+   color: red;
+   width: 0px;
+   height: 0px;
+   border-right:  100px solid transparent;
+   border-bottom: 70px  solid red;
+   border-left:   100px solid transparent;
+   -moz-transform:    rotate(35deg);
+   -webkit-transform: rotate(35deg);
+   -ms-transform:     rotate(35deg);
+   -o-transform:      rotate(35deg);
+}
+.star:before {
+   border-bottom: 80px solid red;
+   border-left: 30px solid transparent;
+   border-right: 30px solid transparent;
+   position: absolute;
+   height: 0;
+   width: 0;
+   top: -45px;
+   left: -65px;
+   display: block;
+   content: '';
+   -webkit-transform: rotate(-35deg);
+   -moz-transform:    rotate(-35deg);
+   -ms-transform:     rotate(-35deg);
+   -o-transform:      rotate(-35deg);
+   
+}
+.star:after {
+   position: absolute;
+   display: block;
+   color: red;
+   top: 3px;
+   left: -105px;
+   width: 0px;
+   height: 0px;
+   border-right: 100px solid transparent;
+   border-bottom: 70px solid red;
+   border-left: 100px solid transparent;
+   -webkit-transform: rotate(-70deg);
+   -moz-transform:    rotate(-70deg);
+   -ms-transform:     rotate(-70deg);
+   -o-transform:      rotate(-70deg);
+   content: '';
+}
+
+figure.kudos_button a.filled {
+    display: block;
+	position: absolute;
+	background-color: #000;
+	width: 40px;
+	height: 40px;
+	-webkit-border-radius: 40px;
+	-moz-border-radius: 40px;
+	border-radius: 40px;
+	top: 0px;
+	-webkit-transform: scale(0.3);
+	-moz-transform: scale(0.3);
+}
+
+figure.kudos_button a.filled.heart {
+    display: block;
+	position: absolute;
+	background-color: #000;
+	width: 23px;
+	height: auto;
+	-webkit-border-radius: 40px;
+	-moz-border-radius: 40px;
+	border-radius: 40px;
+	top: 12px;
+	-webkit-transform: scale(0.3);
+	-moz-transform: scale(0.3);
+}
+
+
+figure.kudos_button p {
+	line-height: 18px;
+	font-family: "freight-sans-pro", sans-serif;
+	font-weight: 900;
+	margin: 0;
+	margin-top: 1px;
+
+	font-size: 20px;
+	color: #000;
+	text-align: center;
+
+}
+
+figure.kudos_button .status {
+		margin-bottom: 5px;
+		margin-top: 4px;
+}
+
+figure.kudos_button .status:after {
+    content: "Sent!";
+}
+
+figure.kudos_button .count {
+		margin-bottom: 5px;
+		margin-top: 4px;
+}
+
+figure.kudos_button .count:after {
+    content: " Kudos";
+}
+
+/* APP STATES */
+
+/* waiting */
+figure.kudos_button.waiting a.filled {
+	-webkit-animation-name: hoverPulse;
+	-moz-animation-name: hoverPulse;
+	-webkit-animation-duration: 3s;
+	-moz-animation-duration: 3s;
+	-webkit-animation-iteration-count: infinite;
+	-moz-animation-iteration-count: infinite;
+	-webkit-animation-timing-function:linear;
+	-moz-animation-timing-function: linear;
+}
+
+figure.kudos_button.waiting .status {
+    display: none;
+}
+
+/* hover */
+figure.kudos_button.waiting:hover a.filled {
+  -webkit-animation-name: hoverSelect;
+  -moz-animation-name: hoverSelect;
+	-webkit-animation-duration: 1s;
+	-moz-animation-duration: 1s;
+	-webkit-animation-iteration-count: 1;
+	-moz-animation-iteration-count: 1;
+	-webkit-animation-timing-function:linear;
+	-moz-animation-timing-function:linear;
+}
+
+figure.kudos_button.waiting:hover .count {
+    display: none;
+}
+
+figure.kudos_button.waiting:hover .status {
+    display: block;
+}
+figure.kudos_button.waiting:hover .status:after {
+    content: "Dont Move"
+}
+
+/* done */
+figure.kudos_button.done .status {
+	display: block;
+	text-transform: uppercase;
+}
+
+figure.kudos_button.done .count {
+    display: none;
+}
+
+figure.kudos_button.done div.circle {
+	background: #000 center center no-repeat;
+	border: 4px solid #000;
+}
+
+figure.kudos_button.done a.filled {
+	display: none;
+}
+
+
+figure.kudos_button.done:hover .status:after {
+    content: "Sent!";
+}
+
+/* HIDE STUFF */
+.hide {
+    display: none;
+}
+
+
+iframe{
+    height: 1.8em;
+    display: inline;
+    width: 4em;
+    margin-right: -2em;
+    margin-left: 1em;
+    padding: 0px;
+    border: none;
+    overflow: hidden;
+    background: transparent;
+    -webkit-transform: scale(1.8) rotate(15deg);
+}

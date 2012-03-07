@@ -1,0 +1,132 @@
+<!-- Load jQuery UI CSS (theme: ui-lightness) -->
+<!-- Change theme to fit -->
+<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/themes/ui-lightness/jquery-ui.css"/>
+
+<!-- Hidden form for Modal Window -->
+<div id="message-form" title="Send a message" style="display:none">
+	<p class="validater">All fields required.</p>
+
+	<form>
+	<fieldset>
+		<label for="email">Your Email</label>
+		<input type="text" name="email" id="email" value="" class="text ui-widget-content ui-corner-all" />
+		<label for="message">Message</label>
+		<textarea name="message" id="message" value="" class="text ui-widget-content ui-corner-all"> </textarea>
+	</fieldset>
+	</form>
+</div>
+
+<!-- Async library loading via Google JS API -->
+<!-- Thanks Larry! ;) -->
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script>
+google.load("jqueryui", "1.8.1");
+google.load("jquery", "1.7.1");
+</script>
+
+<!-- The Magic Ingredient -->
+<!-- You have to paste in your MailerJS API Key. -->
+<!-- Don't have one? Get one here: http://mailerjs.com -->
+<script>
+    // Mailer.js
+    MailerJS = {
+      key:"Your MailerJS API Key",                  //Edit this.
+      log:function(obj){
+        if(obj.subject === undefined || obj.from === undefined || obj.body === undefined){
+          throw "Make sure object meets form:{subject:_,from:_,body:_}"
+        }
+        if(MailerJS.key === null){
+          throw "Please set your API key."
+        }
+        mydata = {subject:obj.subject, from:obj.from, body:obj.body, key:MailerJS.key};
+        $.ajax({
+          url:"https://www.mailerjs.com/message",
+          data:mydata,
+          dataType:"jsonp",
+          success:function(data){
+          }
+        });
+      }
+    }
+
+    // Basic logic and validation
+	$(document).ready(function() {
+		$( "#dialog:ui-dialog" ).dialog( "destroy" );
+		
+		var email = $( "#email" ),
+			message = $( "#message" ),
+			allFields = $( [] ).add( email ).add( message ),
+			tips = $( ".validater" );
+
+		function updateTips( t ) {                              // Side tips
+			tips
+				.text( t )
+				.addClass( "ui-state-highlight" );
+			setTimeout(function() {
+				tips.removeClass( "ui-state-highlight", 1500 );
+			}, 500 );
+		}
+
+		function checkLength( o, n, min, max ) {                // Does what it says.
+			if ( o.val().length > max || o.val().length < min ) {
+				o.addClass( "ui-state-error" );
+				updateTips( "Length of " + n + " must be between " +
+					min + " and " + max + "." );
+				return false;
+			} else {
+				return true;
+			}
+		}
+
+		function checkRegexp( o, regexp, n ) {
+			if ( !( regexp.test( o.val() ) ) ) {
+				o.addClass( "ui-state-error" );
+				updateTips( n );
+				return false;
+			} else {
+				return true;
+			}
+		}
+		
+        // Creating a modal window. Assigining Defaults.
+		$( "#message-form" ).dialog({
+			autoOpen: false,
+			height: 300,
+			width: 350,
+			modal: true,
+			buttons: {
+				"Send Message": function() {
+					var bValid = true;
+					allFields.removeClass( "ui-state-error" );
+
+					bValid = bValid && checkLength( email, "email", 5, 80 );       // Min, Max length for email
+					bValid = bValid && checkLength( message, "message", 5, 1200 ); // Min, Max length for message
+
+					// You giving me BS instead of a valid email? Take this.
+					bValid = bValid && checkRegexp( email, /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i, "eg. me@mrtomkins.com" );
+
+					if ( bValid ) {
+                        MailerJS.log({
+                          subject:"Hello there!",       // Subject
+                          from:email.val(),             // User Email *Caution: He may be lying.
+                          body:message.val()            // Whatever.
+                        });
+						$( this ).dialog( "close" );
+					}
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
+				}
+			},
+			close: function() {
+				allFields.val( "" ).removeClass( "ui-state-error" );
+			}
+		});
+
+		$('a[href^="mailto:"]')                         // Find all lame mailto links.
+			.click(function() {
+				$( "#message-form" ).dialog( "open" );  // Okay. Start it up.
+				return false;                           // Prevent Default Bullshit.
+			});
+	});
+</script>
